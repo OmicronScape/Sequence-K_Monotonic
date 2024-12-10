@@ -1,0 +1,69 @@
+```plaintext
+ΑΛΓΟΡΙΘΜΟΣ Ακολουθία_κ-μονότονη
+ΣΤΑΘΕΡΕΣ
+    Ν = 10;
+ΔΕΔΟΜΕΝΑ
+    sequence: ARRAY[N] OF REAL; /# Πίνακας της ακολουθίας #/
+    i, k, max_length, min_length, current_length: INTEGER;
+    monotony_changes = 0: INTEGER; /# εδώ θα έχουμε τις αλλαγές μονοτονίας #/
+    valid: BOOLEAN; /# Λογική μεταβλητή για έλεγχο εγκυρότητας #/
+
+ΑΡΧΗ
+    /# Εισαγωγή και έλεγχος τιμών με Αμυντικό προγραμματισμό #/
+    ΕΠΑΝΑΛΑΒΕ
+        valid = TRUE 
+        ΓΙΑ i ΑΠΟ 0 ΜΕΧΡΙ Ν – 1 ΜΕ ΒΗΜΑ 1
+            ΤΥΠΩΣΕ("Εισάγετε το στοιχείο ", i + 1, ": ");
+            ΔΙΑΒΑΣΕ(sequence[i]);
+            
+            ΕΑΝ i > 0 ΚΑΙ sequence[i] = sequence[i - 1] ΤΟΤΕ
+                ΤΥΠΩΣΕ("Δόθηκαν δύο ίδια συνεχόμενα στοιχεία – παρακαλώ επαναλάβετε την είσοδο από την αρχή.", EOLN);
+                valid = FALSE
+            ΕΑΝ-ΤΕΛΟΣ
+        ΓΙΑ-ΤΕΛΟΣ
+    ΜΕΧΡΙ valid = TRUE
+
+    /# Εμφάνιση της ακολουθίας #/
+    ΤΥΠΩΣΕ("Η ακολουθία είναι: [ ");
+    ΓΙΑ i ΑΠΟ 0 ΜΕΧΡΙ Ν - 1 ΜΕ ΒΗΜΑ 1
+        ΤΥΠΩΣΕ(sequence[i]);
+    ΓΙΑ-ΤΕΛΟΣ
+    ΤΥΠΩΣΕ(EOLN, "]");
+
+    /# Υπολογισμός αλλαγών μονοτονίας και υποακολουθιών #/
+    max_length = 1
+    min_length = Ν
+    current_length = 1
+
+    ΓΙΑ i ΑΠΟ 1 ΜΕΧΡΙ Ν - 1 ΜΕ ΒΗΜΑ 1
+        ΕΑΝ (sequence[i] > sequence[i - 1] ΚΑΙ sequence[i - 1] < sequence[i - 2]) Ή
+           (sequence[i] < sequence[i - 1] ΚΑΙ sequence[i - 1] > sequence[i - 2]) ΤΟΤΕ
+            monotony_changes = monotony_changes + 1
+            ΕΑΝ current_length > max_length ΤΟΤΕ
+                max_length = current_length
+            ΕΑΝ-ΤΕΛΟΣ
+            ΕΑΝ current_length < min_length ΚΑΙ current_length > 1 ΤΟΤΕ
+                min_length = current_length
+            ΕΑΝ-ΤΕΛΟΣ
+            current_length = 1
+        ΑΛΛΙΩΣ
+            current_length = current_length + 1
+        ΕΑΝ-ΤΕΛΟΣ
+    ΓΙΑ-ΤΕΛΟΣ
+
+    /# Ενημέρωση για την τελευταία υποακολουθία #/
+    ΕΑΝ current_length > max_length ΤΟΤΕ
+        max_length = current_length
+    ΕΑΝ-ΤΕΛΟΣ
+    ΕΑΝ current_length < min_length ΚΑΙ current_length > 1 ΤΟΤΕ
+        min_length = current_length
+    ΕΑΝ-ΤΕΛΟΣ
+
+    /# Εμφάνιση αποτελεσμάτων-ακολουθιών #/
+    ΤΥΠΩΣΕ("Η δοθείσα ακολουθία είναι ", monotony_changes, "-μονότονη.", EOLN);
+    ΤΥΠΩΣΕ("Ελάχιστο μήκος μονότονων υποακολουθιών: ", min_length, EOLN);
+    ΤΥΠΩΣΕ("Μέγιστο μήκος μονότονων υποακολουθιών: ", max_length, EOLN);
+
+ΤΕΛΟΣ
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
